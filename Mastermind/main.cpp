@@ -18,37 +18,51 @@ void afficherCombinaison(int combinaisonMystere[], int nombreCases);
 
 int main(int argc, const char * argv[])
 {
-    srandomdev(); // Remet à zéro le hasard
-    
     cout << "Bienvenue au jeu du Mastermind !" << endl << endl;
-    
-    const int nombreCases = demanderNombre("Combien de cases souhaitez-vous ? ");
-    const int nombreCouleurs = demanderNombre("Combien de couleurs souhaitez-vous ? ");
-    
-    cout << endl << "Génération d'une nouvelle partie ..." << endl << endl;
-    
-    int combinaisonMystere [nombreCases], nombreEssai = 0, combinaisonUtilisateur[nombreCases], score [2] = {0};
-    
-    genererCombinaison(combinaisonMystere, nombreCases, nombreCouleurs);
-    
-    do{
-        nombreEssai++;
-        demanderCombinaison(combinaisonUtilisateur, nombreCases, nombreEssai);
-        calculScore(combinaisonMystere, combinaisonUtilisateur, nombreCases, score);
-        if (score[0] == nombreCases) {
-            cout << endl << endl << "Bravo ! Vous avez trouvé la combinaison ! La combinaison était :";
-            afficherCombinaison(combinaisonMystere, nombreCases);
-            cout << endl;
+    bool nouvellePartie;
+    string reponseNouveauJeu;
+    do {
+        nouvellePartie = false;
+        
+        srandomdev(); // Remet à zéro le hasard
+        
+        
+        const int nombreCases = demanderNombre("Combien de cases souhaitez-vous ? ");
+        const int nombreCouleurs = demanderNombre("Combien de couleurs souhaitez-vous ? ");
+        
+        cout << endl << "Génération d'une nouvelle partie ..." << endl << endl;
+        
+        int combinaisonMystere [nombreCases], nombreEssai = 0, combinaisonUtilisateur[nombreCases], score [2] = {0};
+        
+        genererCombinaison(combinaisonMystere, nombreCases, nombreCouleurs);
+        afficherCombinaison(combinaisonMystere, nombreCases);
+        
+        do{
+            nombreEssai++;
+            demanderCombinaison(combinaisonUtilisateur, nombreCases, nombreEssai);
+            calculScore(combinaisonMystere, combinaisonUtilisateur, nombreCases, score);
+            if (score[0] == nombreCases) {
+                cout << endl << endl << "Bravo ! Vous avez trouvé la combinaison ! La combinaison était :";
+                afficherCombinaison(combinaisonMystere, nombreCases);
+                cout << endl;
+            }
+            else {
+                cout << "Vous avez " << score[0] << " bon(s) nombre(s) au bon(s) endroit(s) et " << score[1] << " bon(s) nombre(s) mal placé(s)." << endl << endl;
+                
+            }
+            
+        } while (score[0] != nombreCases);
+        
+        cout << "Voulez-vous rejouer (oui/non) ? ";
+        cin >> reponseNouveauJeu;
+        if (reponseNouveauJeu == "oui") {
+            nouvellePartie = true;
         }
         else {
-            cout << "Vous avez " << score[0] << " bon(s) nombre(s) au bon(s) endroit(s) et " << score[1] << " bon(s) nombre(s) mal placé(s)." << endl << endl;
-            
+            nouvellePartie = false;
         }
         
-    } while (score[0] != nombreCases);
-    
-    
-    
+    } while (nouvellePartie == true);
     
     return 0;
 }
