@@ -80,8 +80,8 @@ void calculScore(int combinaisonMystere [], int combinaisonUtilisateur [], int n
 {
     bool combinaisonMystereMarque [nombreCases], combinaisonUtilisateurMarque [nombreCases];
     
-    score[0] = 0; // Remise a zéro des scores
-    score[1] = 0;
+    
+    fill(score, score + 2, 0); // Remet à zéro les scores
     
     for (int i = 0; i < nombreCases; i++) { //Remise à zéro des marques sur les combinaisons
         combinaisonMystereMarque[i] = false;
