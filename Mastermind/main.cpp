@@ -14,9 +14,11 @@ int demanderNombre (string caption);
 void genererCombinaison (int combinaisonMystere[], int nombreCases, int nombreCouleurs);
 void demanderCombinaison (int combinaisonUtilisateur [], int nombreCases, int nombreEssai);
 void calculScore(int combinaisonMystere [], int combinaisonUtilisateur [], int nombreCases, int score []);
+void afficherCombinaison(int combinaisonMystere[], int nombreCases);
 
 int main(int argc, const char * argv[])
 {
+    srandomdev(); // Remet à zéro le hasard
     
     cout << "Bienvenue au jeu du Mastermind !" << endl << endl;
     
@@ -33,10 +35,17 @@ int main(int argc, const char * argv[])
         nombreEssai++;
         demanderCombinaison(combinaisonUtilisateur, nombreCases, nombreEssai);
         calculScore(combinaisonMystere, combinaisonUtilisateur, nombreCases, score);
-    
+        if (score[0] == nombreCases) {
+            cout << endl << endl << "Bravo ! Vous avez trouvé la combinaison ! La combinaison était :";
+            afficherCombinaison(combinaisonMystere, nombreCases);
+            cout << endl;
+        }
+        else {
+            cout << "Vous avez " << score[0] << " bon(s) nombre(s) au bon(s) endroit(s) et " << score[1] << " bon(s) nombre(s) mal placé(s)." << endl << endl;
+            
+        }
         
-        
-    }while (score[0] != nombreCases);
+    } while (score[0] != nombreCases);
     
     
     
@@ -61,7 +70,7 @@ void genererCombinaison (int combinaisonMystere[], int nombreCases, int nombreCo
 
 void demanderCombinaison (int combinaisonUtilisateur [], int nombreCases, int nombreEssai)
 {
-    cout << "Essai " << nombreEssai << "/10, entrer une combinaison (séparer les chiffres d'un espace) : ";
+    cout << "Essai n°" << nombreEssai << ", entrer une combinaison (séparer les chiffres d'un espace) : ";
     for (int i = 0; i < nombreCases; i++) {
         cin >> combinaisonUtilisateur[i];
     }
@@ -69,12 +78,45 @@ void demanderCombinaison (int combinaisonUtilisateur [], int nombreCases, int no
 
 void calculScore(int combinaisonMystere [], int combinaisonUtilisateur [], int nombreCases, int score [])
 {
+    bool combinaisonMystereMarque [nombreCases], combinaisonUtilisateurMarque [nombreCases];
+    
+    score[0] = 0; // Remise a zéro des scores
+    score[1] = 0;
+    
+    for (int i = 0; i < nombreCases; i++) { //Remise à zéro des marques sur les combinaisons
+        combinaisonMystereMarque[i] = false;
+        combinaisonUtilisateurMarque[i] = false;
+    }
+    
     for (int i = 0; i < nombreCases; i++) { // Calcul du nombre de "noir" (bonne couleur au bon endroit)
         if (combinaisonUtilisateur [i] == combinaisonMystere [i]) {
-            score [0] += 1;
+            score [0] += 1; // score[0] représente les noirs
+            combinaisonMystereMarque[i] = true;
+            combinaisonUtilisateurMarque[i] = true;
         }
     }
     
+    for (int i = 0; i < nombreCases; i++) { // Calcul du nombre de "blanc" (bonne couleur pas au même endroit)
+        if (combinaisonMystereMarque[i] == false) {
+            for (int j = 0; j < nombreCases; j++) {
+                if (combinaisonUtilisateur[j] == combinaisonMystere[i] && combinaisonUtilisateurMarque[j] == false) {
+                    score[1] += 1; // représente les blancs
+                    combinaisonMystereMarque[i] = true;
+                    combinaisonUtilisateurMarque[j] = true;
+                    break;
+                }
+            }
+        }
+        
+    }
     
+}
+
+void afficherCombinaison(int combinaisonMystere[], int nombreCases)
+{
+    for (int i = 0; i < nombreCases; i++) {
+        cout << " | " << combinaisonMystere[i] << " | ";
+    }
     
+    cout << endl << endl;
 }
