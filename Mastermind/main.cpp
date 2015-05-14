@@ -35,7 +35,8 @@ int main(int argc, const char * argv[])
         int combinaisonMystere [nombreCases], nombreEssai = 0, combinaisonUtilisateur[nombreCases], score [2] = {0};
         
         genererCombinaison(combinaisonMystere, nombreCases, nombreCouleurs);
-        afficherCombinaison(combinaisonMystere, nombreCases);
+        
+        //afficherCombinaison(combinaisonMystere, nombreCases);
         
         do{
             nombreEssai++;
